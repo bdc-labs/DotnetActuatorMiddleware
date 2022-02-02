@@ -45,7 +45,7 @@
         "semantic-release-dotnet",
         {
           "paths": [
-            "src/**.csproj"
+            "src/**/*.csproj"
           ]
         }
       ],
@@ -82,10 +82,12 @@
         {
           "assets": [
             {
-              "path": "src/DotnetActuatorMiddleware/bin/Release/*.nupkg",
+              "path": "nuget_output/*.nupkg",
               "label": "Nuget package"
             }
-          ]
+          ],
+          "failComment": false,
+          "failTitle": false
         }
       ]
     ]
