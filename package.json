@@ -44,7 +44,9 @@
       [
         "semantic-release-dotnet",
         {
-          "paths": ["src/**.csproj"]
+          "paths": [
+            "src/**.csproj"
+          ]
         }
       ],
       [
