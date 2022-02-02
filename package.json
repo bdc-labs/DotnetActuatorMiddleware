@@ -82,7 +82,7 @@
         {
           "assets": [
             {
-              "path": "nuget_output/*.nupkg",
+              "path": "src/DotnetActuatorMiddleware/bin/Release/*.nupkg",
               "label": "Nuget package"
             }
           ],
