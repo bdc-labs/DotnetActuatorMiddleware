@@ -1,0 +1,91 @@
+{
+  "name": "dotnetactuatormiddleware",
+  "version": "1.0.0",
+  "description": "Provides actuator style endpoints for .NET web services similar to those offered by SpringBoot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdc-labs/DotnetActuatorMiddleware.git"
+  },
+  "private": true,
+  "author": "BDC Labs (https://github.com/bdc-labs)",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "is-ci || husky install",
+    "test:unit": "dotnet test tests/DotnetActuatorMiddleware.Tests.Unit/DotnetActuatorMiddleware.Tests.Unit.csproj",
+    "start:test:stack": "docker-compose up -d",
+    "stop:test:stack": "docker-compose down",
+    "test:integration": "dotnet test tests/DotnetActuatorMiddleware.Tests.Integration/DotnetActuatorMiddleware.Tests.Integration.csproj"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^14.1.0",
+    "@commitlint/config-conventional": "^14.1.0",
+    "semantic-release": "^19.0.2",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "semantic-release-nuget": "^1.1.1",
+    "semantic-release-dotnet": "^1.0.0",
+    "husky": "^7.0.4",
+    "is-ci": "^3.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/changelog",
+      "@semantic-release/release-notes-generator",
+      [
+        "semantic-release-dotnet",
+        {
+          "paths": ["src/**.csproj"]
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "semantic-release-nuget",
+        {
+          "packArguments": [
+            "--configuration",
+            "Release"
+          ],
+          "pushFiles": "src/DotnetActuatorMiddleware/bin/Release/*.nupkg"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+          "assets": [
+            "CHANGELOG.md",
+            "src/**/*.csproj",
+            "package.json",
+            "package-lock.json"
+          ]
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "src/DotnetActuatorMiddleware/bin/Release/*.nupkg",
+              "label": "Nuget package"
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}
