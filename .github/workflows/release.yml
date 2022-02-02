@@ -32,11 +32,16 @@ jobs:
       
       - name: Standup test stack
         run: docker-compose up -d
+
+      - name: Give containers time to start
+        run: sleep 30s
+        shell: bash
       
       - name: Run integration tests
         run: npm run test:integration
       
       - name: Stop test stack
+        if: always()
         run: docker-compose down
 
       - name: Release
