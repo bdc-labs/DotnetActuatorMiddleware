@@ -43,6 +43,9 @@ jobs:
       - name: Stop test stack
         if: always()
         run: docker-compose down
+        
+      - name: Build Nuget package
+        run: dotnet pack --no-build --output nuget_output
 
       - name: Release
         env:
