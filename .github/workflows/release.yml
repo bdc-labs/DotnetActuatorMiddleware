@@ -48,5 +48,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BDC_CI_TOKEN }}
           NUGET_TOKEN: ${{ secrets.NUGET_GALLERY_TOKEN }}
-          NUGET_PUSH_URL: $ {{ secrets.NUGET_GALLERY_PUSH_URL }}
+          NUGET_PUSH_URL: ${{ secrets.NUGET_GALLERY_PUSH_URL }}
         run: npx semantic-release
