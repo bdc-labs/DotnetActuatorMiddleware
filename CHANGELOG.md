@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.0.1...v1.1.0) (2022-02-03)
+
+
+### Bug Fixes
+
+* Fixup compiler null warnings ([96bbadc](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/96bbadc6a717afcf6f821d7824eb19f143cc2a60))
+
+
+### Features
+
+* Add Quartz status endpoint ([86c28d5](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/86c28d5449e74f8d0a532845f5177a2961699c52))
+
 ## [1.0.1](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.0.0...v1.0.1) (2022-02-02)
 
 
