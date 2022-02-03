@@ -21,7 +21,7 @@ public static class ActuatorMiddleware
                 var healthEndpoint = new HealthEndpoint(ipAllowListEnabled);
                 
                 // Check if request is coming from an allowed IP
-                if (healthEndpoint.IpAllowListEnabled && !healthEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
+                if (healthEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !healthEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
@@ -64,7 +64,7 @@ public static class ActuatorMiddleware
                 var infoEndpoint = new InfoEndpoint(ipAllowListEnabled);
                 
                 // Check if request is coming from an allowed IP
-                if (infoEndpoint.IpAllowListEnabled && !infoEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
+                if (infoEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !infoEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
@@ -93,7 +93,7 @@ public static class ActuatorMiddleware
                 var environmentEndpoint = new EnvironmentEndpoint(ipAllowListEnabled);
                 
                 // Check if request is coming from an allowed IP
-                if (environmentEndpoint.IpAllowListEnabled && !environmentEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
+                if (environmentEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !environmentEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
@@ -101,6 +101,34 @@ public static class ActuatorMiddleware
                 }
 
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(environmentEndpoint.GetEnvironment(), new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }));
+
+            }
+            else
+            {
+                await next();
+            }
+        });
+    }
+    
+    public static void UseActuatorQuartzEndpoint(this IApplicationBuilder app, bool ipAllowListEnabled = false)
+    {
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.Path.Value is not null && context.Request.Path.Value == "/quartz")
+            {
+                context.Response.Headers["Content-Type"] = "application/json";
+
+                var quartzEndpoint = new QuartzEndpoint(ipAllowListEnabled);
+                
+                // Check if request is coming from an allowed IP
+                if (quartzEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !quartzEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
+                {
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
+                    return;
+                }
+
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(quartzEndpoint.GetSchedulerStatus()));
 
             }
             else
