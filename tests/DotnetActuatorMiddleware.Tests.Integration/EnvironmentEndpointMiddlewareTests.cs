@@ -78,7 +78,7 @@ public class EnvironmentEndpointMiddlewareTests
         Assert.AreEqual(401, allowedContext.Response.StatusCode);
     }
     
-    [Test(Description = "Return 404 if info endpoint not registered")]
+    [Test(Description = "Return 404 if environment endpoint not registered")]
     public async Task EndpointNotRegisteredTest() 
     {
         using var host = await new HostBuilder()
