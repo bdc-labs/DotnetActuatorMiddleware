@@ -38,8 +38,13 @@ public class ApplicationEnvironment
 
         foreach (var envVar in envVars.Keys)
         {
-            var envVarValue = envVars[envVar].ToString().Replace("\\", "\\\\").Replace('"', '\"');
-            EnvironmentVariables.Add(envVar.ToString(), envVarValue);
+            if (envVars[envVar] is null)
+            {
+                continue;
+            }
+            
+            var envVarValue = envVars[envVar]!.ToString()!.Replace("\\", "\\\\").Replace('"', '\"');
+            EnvironmentVariables.Add(envVar.ToString()!, envVarValue);
         }
         
         OperatingSystem os = Environment.OSVersion;

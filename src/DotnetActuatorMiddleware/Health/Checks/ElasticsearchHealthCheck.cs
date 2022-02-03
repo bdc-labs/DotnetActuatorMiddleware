@@ -38,7 +38,7 @@ public static class ElasticsearchHealthCheck
 
             var clusterHealthDetails = JsonConvert.DeserializeObject<ElasticsearchHealthCheckResponse>(clusterHealthResponse.Body);
 
-            if (clusterHealthDetails.Status == "red")
+            if (clusterHealthDetails!.Status == "red")
             {
                 return HealthResponse.Unhealthy(new ElasticsearchHealthCheckResponse { ClusterName = clusterHealthDetails.ClusterName, Status = clusterHealthDetails.Status });
             }
