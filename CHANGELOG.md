@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.1.0...v1.2.0) (2022-02-04)
+
+
+### Features
+
+* Added job status helpers ([7a56874](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/7a568743c29c5d3ddb3de0f2fb6dbe14d9afe4e3))
+
 # [1.1.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.0.1...v1.1.0) (2022-02-03)
 
 
