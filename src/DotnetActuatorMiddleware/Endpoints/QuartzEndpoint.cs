@@ -68,15 +68,28 @@ internal class QuartzEndpoint : ActuatorEndpoint
                     JobClass = job.JobType.FullName
                 };
 
-                // See if the job contains the necessary data for us to show the last run details
-                if (job.JobDataMap.ContainsKey("lastRunSuccessful") && !string.IsNullOrWhiteSpace(job.JobDataMap["lastRunSuccessful"].ToString()))
+                // If the job sets the last lastRunSuccessful key and it's actually a bool then include it in our output
+                if (job.JobDataMap.ContainsKey("lastRunSuccessful") && job.JobDataMap["lastRunSuccessful"] is bool)
                 {
-                    jobObj.LastRunSuccessful = bool.Parse(job.JobDataMap["lastRunSuccessful"].ToString()!);
+                    jobObj.LastRunSuccessful = (bool) job.JobDataMap["lastRunSuccessful"];
                 }
 
-                if (job.JobDataMap.ContainsKey("lastErrorMessage") && !string.IsNullOrWhiteSpace(job.JobDataMap["lastRunSuccessful"].ToString()))
+                // If the job sets the last lastErrorMessage key and it's a non-null and non-empty string then include it in our output
+                if (job.JobDataMap.ContainsKey("lastErrorMessage") && !string.IsNullOrWhiteSpace(job.JobDataMap["lastErrorMessage"].ToString()))
                 {
                     jobObj.LastRunErrorMessage = job.JobDataMap["lastErrorMessage"].ToString();
+                }
+                
+                // If the job sets the last lastErrorTimeUtc key and it's a DateTimeOffset then include it in our output
+                if (job.JobDataMap.ContainsKey("lastErrorTimeUtc") && job.JobDataMap["lastErrorTimeUtc"] is DateTimeOffset)
+                {
+                    jobObj.LastErrorTimeUtc = (DateTimeOffset) job.JobDataMap["lastErrorTimeUtc"];
+                }
+                
+                // Allow job to include an arbitrary output object that we'll serialize to JSON
+                if (job.JobDataMap.ContainsKey("lastRunOutput"))
+                {
+                    jobObj.LastRunOutput = job.JobDataMap["lastRunOutput"];
                 }
 
                 // Get details all triggers for this job

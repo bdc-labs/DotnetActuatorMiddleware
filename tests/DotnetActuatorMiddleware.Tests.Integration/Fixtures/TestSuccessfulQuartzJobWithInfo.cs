@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 
+using DotnetActuatorMiddleware.Util;
+
 using Quartz;
 
 namespace DotnetActuatorMiddleware.Tests.Integration.Fixtures;
@@ -9,6 +11,6 @@ public class TestSuccessfulQuartzJobWithInfo : IJob
 {
     public async Task Execute(IJobExecutionContext context)
     {
-        context.JobDetail.JobDataMap.Put("lastRunSuccessful", true);
+        context.MarkJobSuccessful("stringOutput");
     }
 }

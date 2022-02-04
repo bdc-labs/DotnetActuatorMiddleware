@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -232,9 +233,11 @@ public class QuartzEndpointTests
         
         Assert.False(failingJobObj.LastRunSuccessful);
         Assert.AreEqual("error", failingJobObj.LastRunErrorMessage);
+        Assert.IsNotNull(failingJobObj.LastErrorTimeUtc);
         
         Assert.True(successfulJobObj.LastRunSuccessful);
         Assert.IsNull(successfulJobObj.LastRunErrorMessage);
+        Assert.AreEqual("stringOutput", successfulJobObj.LastRunOutput);
 
     }
     

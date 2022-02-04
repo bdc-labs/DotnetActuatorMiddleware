@@ -18,7 +18,9 @@ public struct QuartzEndpointJob
     public string? Description;
     public string? JobClass;
     public bool? LastRunSuccessful = null;
+    public DateTimeOffset? LastErrorTimeUtc;
     public string? LastRunErrorMessage = null;
+    public object? LastRunOutput = null;
     public bool ConcurrentExecutionAllowed;
     public bool PersistJobData;
     public List<QuartzEndpointJobTriggers> Triggers = new List<QuartzEndpointJobTriggers>();
