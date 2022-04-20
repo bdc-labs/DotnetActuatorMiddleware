@@ -4,6 +4,10 @@ services:
   mysql:
     image: mysql:8
     container_name: dotnetactuatormiddleware_mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      retries: 5
+      interval: 30s
     environment:
       - MYSQL_ROOT_PASSWORD=r00t
       - MYSQL_DATABASE=testdb
@@ -12,6 +16,10 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
     container_name: dotnetactuatormiddleware_elasticsearch
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:9200/" ]
+      retries: 5
+      interval: 30s
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -20,6 +28,10 @@ services:
   elasticsearch-auth:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
     container_name: dotnetactuatormiddleware_elasticsearch_auth
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "-u", "elastic:changeme", "http://127.0.0.1:9200/" ]
+      retries: 5
+      interval: 30s
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=true
@@ -28,3 +40,14 @@ services:
     ports:
       - 127.0.0.1:19201:9200
     
+  # A tiny container that runs 'true' so that we have something that will make Docker compose
+  # wait until the entire stack is healthy
+  stack_is_ready:
+    image: tianon/true
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      elasticsearch-auth:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
