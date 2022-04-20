@@ -14,6 +14,7 @@ services:
     container_name: dotnetactuatormiddleware_elasticsearch
     environment:
       - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - 127.0.0.1:19200:9200
   elasticsearch-auth:
@@ -23,6 +24,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=changeme
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - 127.0.0.1:19201:9200
     
