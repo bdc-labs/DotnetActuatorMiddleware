@@ -22,6 +22,7 @@ services:
       interval: 30s
     environment:
       - discovery.type=single-node
+      - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - 127.0.0.1:19200:9200
