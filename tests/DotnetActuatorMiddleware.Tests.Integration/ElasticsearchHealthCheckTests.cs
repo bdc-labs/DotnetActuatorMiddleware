@@ -17,6 +17,11 @@ public class ElasticsearchHealthCheckTests
         new Uri("http://localhost:19201/")
     };
     
+    private readonly Uri[] _sslServerUris =
+    {
+        new Uri("https://localhost:19202/")
+    };
+    
     private readonly Uri[] _invalidServerUris =
     {
         new Uri("http://es11:19200/"),
@@ -50,6 +55,28 @@ public class ElasticsearchHealthCheckTests
         var elasticHealthCheckResponse = (ElasticsearchHealthCheckResponse) elasticHealthCheck.Response!;
         
         Assert.AreEqual("green",elasticHealthCheckResponse.Status);
+    }
+    
+    [Test(Description = "SSL - Server certificate validation disabled")]
+    public void ElasticsearchServerCertificateValidationDisabledTest()
+    {
+        var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_sslServerUris, username: "elastic", password: "changeme", serverCertificateValidation: false);
+        
+        Assert.True(elasticHealthCheck.IsHealthy);
+        Assert.NotNull(elasticHealthCheck.Response);
+        Assert.IsInstanceOf<ElasticsearchHealthCheckResponse>(elasticHealthCheck.Response);
+
+        var elasticHealthCheckResponse = (ElasticsearchHealthCheckResponse) elasticHealthCheck.Response!;
+        
+        Assert.AreEqual("green",elasticHealthCheckResponse.Status);
+    }
+    
+    [Test(Description = "SSL - Fail if certificate invalid")]
+    public void ElasticsearchSelfSignedSslTest()
+    {
+        var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_sslServerUris, username: "elastic", password: "changeme");
+
+        Assert.False(elasticHealthCheck.IsHealthy);
     }
     
     [Test(Description = "Fail check if unauthenticated")]

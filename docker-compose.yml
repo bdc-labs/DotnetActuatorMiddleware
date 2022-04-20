@@ -23,7 +23,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
     ports:
       - 127.0.0.1:19200:9200
   elasticsearch-auth:
@@ -37,9 +37,31 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=changeme
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
     ports:
       - 127.0.0.1:19201:9200
+  elasticsearch-ssl:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
+    container_name: dotnetactuatormiddleware_elasticsearch_ssl
+    healthcheck:
+      test: [ "CMD", "curl", "-k", "-f", "-u", "elastic:changeme", "https://127.0.0.1:9200/" ]
+      retries: 5
+      interval: 30s
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=changeme
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/es-key.pem
+      - xpack.security.http.ssl.certificate=/usr/share/elasticsearch/config/es-cert.pem
+      - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/config/ca.pem
+    ports:
+      - 127.0.0.1:19202:9200
+    volumes:
+      - "./fixtures/elasticsearch_certs/es-key.pem:/usr/share/elasticsearch/config/es-key.pem"
+      - "./fixtures/elasticsearch_certs/es-cert.pem:/usr/share/elasticsearch/config/es-cert.pem"
+      - "./fixtures/elasticsearch_certs/ca.pem:/usr/share/elasticsearch/config/ca.pem"
     
   # A tiny container that runs 'true' so that we have something that will make Docker compose
   # wait until the entire stack is healthy
@@ -49,6 +71,8 @@ services:
       elasticsearch:
         condition: service_healthy
       elasticsearch-auth:
+        condition: service_healthy
+      elasticsearch-ssl:
         condition: service_healthy
       mysql:
         condition: service_healthy
