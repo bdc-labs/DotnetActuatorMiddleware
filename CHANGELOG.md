@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.2.0...v1.3.0) (2022-04-30)
+
+
+### Bug Fixes
+
+* Resolve compilation errors on latest C# version ([43bab02](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/43bab02ea19112d2ddce2d2d0e7e785d74edc611))
+
+
+### Features
+
+* Allow SSL validation to be disabled in Elasticsearch health check ([e42f255](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/e42f255ea50b4582496a90023d6828ebfbe386cd))
+
 # [1.2.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.1.0...v1.2.0) (2022-02-04)
 
 
