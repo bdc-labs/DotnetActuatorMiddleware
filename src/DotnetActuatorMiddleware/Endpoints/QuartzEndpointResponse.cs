@@ -1,17 +1,17 @@
 namespace DotnetActuatorMiddleware.Endpoints;
 
-public struct QuartzEndpointResponse
+public class QuartzEndpointResponse
 {
     public Dictionary<string, QuartzEndpointScheduler> Schedulers = new Dictionary<string, QuartzEndpointScheduler>();
 }
 
-public struct QuartzEndpointScheduler
+public class QuartzEndpointScheduler
 {
     public string? SchedulerStatus;
     public List<QuartzEndpointJob> Jobs = new List<QuartzEndpointJob>();
 }
 
-public struct QuartzEndpointJob
+public class QuartzEndpointJob
 {
     public string? Name;
     public string? Group;
