@@ -4,6 +4,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Version>1.3.0</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Provides actuator style health and information endpoints for .NET web applications.</Description>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
@@ -15,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <None Include="../../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Elasticsearch.Net" Version="7.16.0">
