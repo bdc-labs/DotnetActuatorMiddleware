@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using DotnetActuatorMiddleware.Util;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
@@ -94,6 +96,21 @@ public class ConfigurationRegistryTests
         
         Assert.NotNull(testValue);
         Assert.AreEqual("testValue", testValue);
+    }
+    
+    [Test(Description = "Get a configuration section from a configuration source")]
+    public void GetConfigurationSectionTest()
+    {
+        var collection = new Dictionary<string, string>() { { "outerkey:innerkey", "testValue" } };
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
+        
+        var testSection = ConfigurationRegistry.GetConfigurationSection("memorySource", "outerkey");
+        var testSectionChildKey = testSection.GetChildren().ToList()[0];
+        
+        Assert.NotNull(testSectionChildKey);
+        Assert.AreEqual("innerkey", testSectionChildKey.Key);
+        Assert.AreEqual("testValue", testSectionChildKey.Value);
     }
     
     [Test(Description = "Get non-existent key from source")]

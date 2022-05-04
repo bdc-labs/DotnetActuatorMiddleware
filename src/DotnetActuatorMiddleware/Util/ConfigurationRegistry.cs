@@ -47,6 +47,23 @@ public class ConfigurationRegistry
     {
         Sources.Clear();
     }
+
+    /// <summary>
+    /// Get a configuration section from the specific source. This is useful if you need the actual <see cref="IConfigurationSection"/>
+    /// object in order to easily access its children.
+    /// </summary>
+    /// <param name="sourceName">Configuration source to get the section from</param>
+    /// <param name="key">Key of the configuration section to retrieve</param>
+    /// <returns>An <see cref="IConfigurationSection"/> instance</returns>
+    public static IConfigurationSection GetConfigurationSection(string sourceName, string key)
+    {
+        if (!Sources.ContainsKey(sourceName))
+        {
+            throw new InvalidOperationException($"There is no configuration source registered with the name {sourceName}");
+        }
+
+        return Sources[sourceName].GetSection(key);
+    }
     
     /// <summary>
     ///  Gets the value of the specified key in the configuration source

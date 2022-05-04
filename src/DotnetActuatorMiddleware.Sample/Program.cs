@@ -16,6 +16,13 @@ ConfigurationRegistry.AddConfigurationSource(config2, "jsonSource");
 Console.WriteLine("key1 key in memorySource: "+ ConfigurationRegistry.GetKey("memorySource", "key1"));
 Console.WriteLine("outerkey:innerkey key in jsonSource: " + ConfigurationRegistry.GetKey("jsonSource", "outerkey:innerkey"));
 
+// You can also get a configuration section directly, useful if you need to iterate over its children rather than retrieving a single key's value
+var jsonConfigSection = ConfigurationRegistry.GetConfigurationSection("jsonSource", "outerkey");
+foreach (var childItem in jsonConfigSection.GetChildren())
+{
+    Console.WriteLine($"Value of {childItem.Key} in jsonSource is {childItem.Value}");
+}
+
 // Runtime configuration can be updated easily as well
 ConfigurationRegistry.SetKey("jsonSource", "outerkey:innerkey", "new value");
 Console.WriteLine("Modified outerkey:innerkey key in jsonSource: " + ConfigurationRegistry.GetKey("jsonSource", "outerkey:innerkey"));
