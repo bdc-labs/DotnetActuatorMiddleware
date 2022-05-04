@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.3.0...v1.4.0) (2022-05-04)
+
+
+### Features
+
+* Add GetConfigurationSection helper method ([c80794a](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/c80794a4cc8185a134f2d35c896e18aa47914fd8))
+
 # [1.3.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.2.0...v1.3.0) (2022-04-30)
 
 
