@@ -18,7 +18,7 @@ public static class ElasticsearchHealthCheck
     {
         try
         {
-            var connectionPool = new SniffingConnectionPool(servers);
+            var connectionPool = new StaticConnectionPool(servers);
             var settings = new ConnectionConfiguration(connectionPool)
                 .SniffOnStartup(false)
                 .RequestTimeout(TimeSpan.FromSeconds(timeoutSecs));
