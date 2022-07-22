@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.1...v1.4.2) (2022-07-22)
+
+
+### Bug Fixes
+
+* Switch to StaticConnectionPool ([fd44cb5](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/fd44cb5e90683ff74598c91d865cbf642f17a82c))
+
 ## [1.4.1](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.0...v1.4.1) (2022-07-22)
 
 
