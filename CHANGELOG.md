@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.0...v1.4.1) (2022-07-22)
+
+
+### Bug Fixes
+
+* Console spam from MySQL health check ([9610220](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/9610220883387554b84a15b99a82479a0cac3898))
+
 # [1.4.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.3.0...v1.4.0) (2022-05-04)
 
 
