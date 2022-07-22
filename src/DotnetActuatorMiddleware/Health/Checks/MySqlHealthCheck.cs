@@ -22,7 +22,6 @@ public static class MySqlHealthCheck
                 cmd.CommandText = "SELECT @@version AS version, @@port AS port, @@hostname AS hostname";
                 var reader = cmd.ExecuteReader();
                 reader.Read();
-                Console.WriteLine(reader.GetString("hostname"));
 
                 return HealthResponse.Healthy(new MySqlHealthCheckResponse { Host = reader.GetString("hostname"), Port = reader.GetInt32("port") , Version = reader.GetString("version")});
                 
