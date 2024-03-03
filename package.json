@@ -14,18 +14,19 @@
     "test:unit": "dotnet test tests/DotnetActuatorMiddleware.Tests.Unit/DotnetActuatorMiddleware.Tests.Unit.csproj",
     "start:test:stack": "docker-compose up -d",
     "stop:test:stack": "docker-compose down",
-    "test:integration": "dotnet test tests/DotnetActuatorMiddleware.Tests.Integration/DotnetActuatorMiddleware.Tests.Integration.csproj"
+    "test:integration": "dotnet test tests/DotnetActuatorMiddleware.Tests.Integration/DotnetActuatorMiddleware.Tests.Integration.csproj",
+    "semantic-release": ""
   },
   "devDependencies": {
-    "@commitlint/cli": "^14.1.0",
-    "@commitlint/config-conventional": "^14.1.0",
-    "semantic-release": "^19.0.2",
-    "@semantic-release/changelog": "^6.0.1",
+    "@commitlint/cli": "^19.0.3",
+    "@commitlint/config-conventional": "^19.0.3",
+    "semantic-release": "^23.0.2",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.2",
-    "semantic-release-nuget": "^1.1.1",
+    "@semantic-release/github": "^9.2.6",
+    "@droidsolutions-oss/semantic-release-nuget": "^2.0.1",
     "semantic-release-dotnet": "^1.0.0",
-    "husky": "^7.0.4",
+    "husky": "^9.0.11",
     "is-ci": "^3.0.1"
   },
   "husky": {
@@ -56,13 +57,10 @@
         }
       ],
       [
-        "semantic-release-nuget",
+        "@droidsolutions-oss/semantic-release-nuget",
         {
-          "packArguments": [
-            "--configuration",
-            "Release"
-          ],
-          "pushFiles": "src/DotnetActuatorMiddleware/bin/Release/*.nupkg"
+          "usePackageVersion": true,
+          "projectPath": "src/DotnetActuatorMiddleware/DotnetActuatorMiddleware.csproj"
         }
       ],
       [
