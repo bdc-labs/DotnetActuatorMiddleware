@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.2...v2.0.0) (2024-03-03)
+
+
+### Features
+
+* Update to .NET 8 and bump deps ([e3544c0](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/e3544c091286c8cb4ba85eaffb1f58f25ac375c9))
+
+
+### BREAKING CHANGES
+
+* This is a major version update of .NET from 6 to 8 and also switches the Elastic health check over to the new
+Elastic.Clients.Elasticsearch package.
+
 ## [1.4.2](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.1...v1.4.2) (2022-07-22)
 
 
