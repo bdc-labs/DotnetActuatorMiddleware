@@ -1,5 +1,8 @@
 using System;
 using DotnetActuatorMiddleware.Health.Checks;
+
+using Elastic.Clients.Elasticsearch;
+
 using NUnit.Framework;
 
 namespace DotnetActuatorMiddleware.Tests.Integration;
@@ -34,13 +37,13 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_serverUris);
         
-        Assert.True(elasticHealthCheck.IsHealthy);
-        Assert.NotNull(elasticHealthCheck.Response);
-        Assert.IsInstanceOf<ElasticsearchHealthCheckResponse>(elasticHealthCheck.Response);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.True);
+        Assert.That(elasticHealthCheck.Response, Is.Not.Null);
+        Assert.That(elasticHealthCheck.Response, Is.InstanceOf<ElasticsearchHealthCheckResponse>());
 
         var elasticHealthCheckResponse = (ElasticsearchHealthCheckResponse) elasticHealthCheck.Response!;
         
-        Assert.AreEqual("green",elasticHealthCheckResponse.Status);
+        Assert.That(elasticHealthCheckResponse.Status, Is.EqualTo(HealthStatus.Green.ToString()));
     }
     
     [Test(Description = "Authenticated Elasticsearch health check")]
@@ -48,13 +51,13 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_authServerUris, username: "elastic", password: "changeme");
         
-        Assert.True(elasticHealthCheck.IsHealthy);
-        Assert.NotNull(elasticHealthCheck.Response);
-        Assert.IsInstanceOf<ElasticsearchHealthCheckResponse>(elasticHealthCheck.Response);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.True);
+        Assert.That(elasticHealthCheck.Response, Is.Not.Null);
+        Assert.That(elasticHealthCheck.Response, Is.InstanceOf<ElasticsearchHealthCheckResponse>());
 
         var elasticHealthCheckResponse = (ElasticsearchHealthCheckResponse) elasticHealthCheck.Response!;
         
-        Assert.AreEqual("green",elasticHealthCheckResponse.Status);
+        Assert.That(elasticHealthCheckResponse.Status, Is.EqualTo(HealthStatus.Green.ToString()));
     }
     
     [Test(Description = "SSL - Server certificate validation disabled")]
@@ -62,13 +65,13 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_sslServerUris, username: "elastic", password: "changeme", serverCertificateValidation: false);
         
-        Assert.True(elasticHealthCheck.IsHealthy);
-        Assert.NotNull(elasticHealthCheck.Response);
-        Assert.IsInstanceOf<ElasticsearchHealthCheckResponse>(elasticHealthCheck.Response);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.True);
+        Assert.That(elasticHealthCheck.Response, Is.Not.Null);
+        Assert.That(elasticHealthCheck.Response, Is.InstanceOf<ElasticsearchHealthCheckResponse>());
 
         var elasticHealthCheckResponse = (ElasticsearchHealthCheckResponse) elasticHealthCheck.Response!;
         
-        Assert.AreEqual("green",elasticHealthCheckResponse.Status);
+        Assert.That(elasticHealthCheckResponse.Status, Is.EqualTo(HealthStatus.Green.ToString()));
     }
     
     [Test(Description = "SSL - Fail if certificate invalid")]
@@ -76,7 +79,7 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_sslServerUris, username: "elastic", password: "changeme");
 
-        Assert.False(elasticHealthCheck.IsHealthy);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.False);
     }
     
     [Test(Description = "Fail check if unauthenticated")]
@@ -84,7 +87,7 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_authServerUris);
         
-        Assert.False(elasticHealthCheck.IsHealthy);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.False);
     }
     
     [Test(Description = "Fail check if credentials are invalid")]
@@ -92,7 +95,7 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_authServerUris, username: "elastic", password: "12345");
         
-        Assert.False(elasticHealthCheck.IsHealthy);
+        Assert.That(elasticHealthCheck.IsHealthy, Is.False);
     }
     
     [Test(Description = "Elasticsearch is unreachable")]
@@ -100,9 +103,9 @@ public class ElasticsearchHealthCheckTests
     {
         var elasticHealthCheck = ElasticsearchHealthCheck.CheckHealth(_invalidServerUris);
         
-        Assert.False(elasticHealthCheck.IsHealthy);
-        Assert.NotNull(elasticHealthCheck.Response);
-        Assert.IsInstanceOf<String>(elasticHealthCheck.Response);
-        Assert.True(elasticHealthCheck.Response!.ToString()!.StartsWith("EXCEPTION: "));
+        Assert.That(elasticHealthCheck.IsHealthy, Is.False);
+        Assert.That(elasticHealthCheck.Response, Is.Not.Null);
+        Assert.That(elasticHealthCheck.Response, Is.InstanceOf<String>());
+        Assert.That(elasticHealthCheck.Response!.ToString()!.StartsWith("EXCEPTION: "), Is.True);
     }
 }

@@ -1,5 +1,3 @@
-using Elasticsearch.Net;
-
 namespace DotnetActuatorMiddleware.Health.Checks;
 
 public class ElasticsearchHealthCheckResponse

@@ -16,15 +16,15 @@ public class MySqlHealthCheckTests
     {
         var checkResponse = MySqlHealthCheck.CheckHealth(ValidConnString);
         
-        Assert.True(checkResponse.IsHealthy);
-        Assert.NotNull(checkResponse.Response);
-        Assert.IsInstanceOf<MySqlHealthCheckResponse>(checkResponse.Response);
+        Assert.That(checkResponse.IsHealthy, Is.True);
+        Assert.That(checkResponse.Response, Is.Not.Null);
+        Assert.That(checkResponse.Response, Is.InstanceOf<MySqlHealthCheckResponse>());
         
         var responseDetails = (MySqlHealthCheckResponse) checkResponse.Response!;
         
-        Assert.NotNull(responseDetails.Host);
-        Assert.NotNull(responseDetails.Version);
-        Assert.AreEqual(3306, responseDetails.Port);
+        Assert.That(responseDetails.Host, Is.Not.Null);
+        Assert.That(responseDetails.Version, Is.Not.Null);
+        Assert.That(responseDetails.Port, Is.EqualTo(3306));
     }
     
     [Test(Description = "MySQL invalid credentials")]
@@ -32,10 +32,10 @@ public class MySqlHealthCheckTests
     {
         var checkResponse = MySqlHealthCheck.CheckHealth(InvalidCredentialConnString);
         
-        Assert.False(checkResponse.IsHealthy);
-        Assert.NotNull(checkResponse.Response);
-        Assert.IsInstanceOf<String>(checkResponse.Response);
-        Assert.True(checkResponse.Response!.ToString()!.StartsWith("EXCEPTION: "));
+        Assert.That(checkResponse.IsHealthy, Is.False);
+        Assert.That(checkResponse.Response, Is.Not.Null);
+        Assert.That(checkResponse.Response, Is.InstanceOf<String>());
+        Assert.That(checkResponse.Response!.ToString()!.StartsWith("EXCEPTION: "), Is.True);
     }
     
     [Test(Description = "MySQL unreachable")]
@@ -43,9 +43,9 @@ public class MySqlHealthCheckTests
     {
         var checkResponse = MySqlHealthCheck.CheckHealth(UnreachableConnString);
         
-        Assert.False(checkResponse.IsHealthy);
-        Assert.NotNull(checkResponse.Response);
-        Assert.IsInstanceOf<String>(checkResponse.Response);
-        Assert.True(checkResponse.Response!.ToString()!.StartsWith("EXCEPTION: "));
+        Assert.That(checkResponse.IsHealthy, Is.False);
+        Assert.That(checkResponse.Response, Is.Not.Null);
+        Assert.That(checkResponse.Response, Is.InstanceOf<String>());
+        Assert.That(checkResponse.Response!.ToString()!.StartsWith("EXCEPTION: "), Is.True);
     }
 }
