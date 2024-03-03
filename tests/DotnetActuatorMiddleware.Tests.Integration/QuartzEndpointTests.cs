@@ -57,9 +57,9 @@ public class QuartzEndpointTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(ContentType, allowedContext.Response.ContentType);
-        Assert.AreEqual(200, allowedContext.Response.StatusCode);
-        Assert.NotNull(allowedContext.Response.Body);
+        Assert.That(allowedContext.Response.ContentType, Is.EqualTo("application/json"));
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(200));
+        Assert.That(allowedContext.Response.Body, Is.Not.Null);
 
     }
     
@@ -91,7 +91,7 @@ public class QuartzEndpointTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(401, allowedContext.Response.StatusCode);
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(401));
     }
 
     [Test(Description = "Return 404 if quartz endpoint not registered")]
@@ -111,7 +111,7 @@ public class QuartzEndpointTests
 
         var response = await host.GetTestClient().GetAsync(EndpointPath);
         
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
     
     [Test(Description = "Simple scheduler with a single registered job")]
@@ -146,26 +146,26 @@ public class QuartzEndpointTests
 
         var response = await host.GetTestClient().GetAsync(EndpointPath);
         
-        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo("application/json"));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
         var responseObj = JsonConvert.DeserializeObject<QuartzEndpointResponse>(response.Content.ReadAsStringAsync().Result);
         
-        Assert.AreEqual(1, responseObj.Schedulers.Count);
-        Assert.Contains("DefaultQuartzScheduler", responseObj.Schedulers.Keys);
-        Assert.AreEqual("STARTED", responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus);
+        Assert.That(responseObj.Schedulers.Count, Is.EqualTo(1));
+        Assert.That(responseObj.Schedulers, Contains.Key("DefaultQuartzScheduler"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus, Is.EqualTo("STARTED"));
 
-        Assert.AreEqual(1, responseObj.Schedulers["DefaultQuartzScheduler"].Jobs.Count);
-        Assert.AreEqual("testJob", responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Name);
-        Assert.AreEqual("group1", responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Group);
-        Assert.IsNull(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Description);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs.Count, Is.EqualTo(1));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Name, Is.EqualTo("testJob"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Group, Is.EqualTo("group1"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Description, Is.Null);
 
-        Assert.NotZero(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers.Count);
-        Assert.AreEqual("testTrigger", responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].Name);
-        Assert.AreEqual("group1", responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].Group);
-        Assert.NotNull(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].StartTimeUtc);
-        Assert.NotNull(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].NextFireTimeUtc);
-        Assert.NotNull(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].LastFireTimeUtc);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers.Count, Is.Not.Zero);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].Name, Is.EqualTo("testTrigger"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].Group, Is.EqualTo("group1"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].StartTimeUtc, Is.Not.Null);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].NextFireTimeUtc, Is.Not.Null);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs[0].Triggers[0].LastFireTimeUtc, Is.Not.Null);
 
     }
     
@@ -214,16 +214,16 @@ public class QuartzEndpointTests
 
         var response = await host.GetTestClient().GetAsync(EndpointPath);
         
-        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo("application/json"));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         
         var responseObj = JsonConvert.DeserializeObject<QuartzEndpointResponse>(response.Content.ReadAsStringAsync().Result);
         
-        Assert.AreEqual(1, responseObj.Schedulers.Count);
-        Assert.Contains("DefaultQuartzScheduler", responseObj.Schedulers.Keys);
-        Assert.AreEqual("STARTED", responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus);
+        Assert.That(responseObj.Schedulers.Count, Is.EqualTo(1));
+        Assert.That(responseObj.Schedulers, Contains.Key("DefaultQuartzScheduler"));
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus, Is.EqualTo("STARTED"));
 
-        Assert.AreEqual(2, responseObj.Schedulers["DefaultQuartzScheduler"].Jobs.Count);
+        Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].Jobs.Count, Is.EqualTo(2));
 
         var failingJobObj = responseObj.Schedulers["DefaultQuartzScheduler"].Jobs
             .First(job => job.Name == "failedJob");
@@ -231,13 +231,13 @@ public class QuartzEndpointTests
         var successfulJobObj = responseObj.Schedulers["DefaultQuartzScheduler"].Jobs
             .First(job => job.Name == "successfulJob");
         
-        Assert.False(failingJobObj.LastRunSuccessful);
-        Assert.AreEqual("error", failingJobObj.LastRunErrorMessage);
-        Assert.IsNotNull(failingJobObj.LastErrorTimeUtc);
+        Assert.That(failingJobObj.LastRunSuccessful, Is.False);
+        Assert.That(failingJobObj.LastRunErrorMessage, Is.EqualTo("error"));
+        Assert.That(failingJobObj.LastErrorTimeUtc, Is.Not.Null);
         
-        Assert.True(successfulJobObj.LastRunSuccessful);
-        Assert.IsNull(successfulJobObj.LastRunErrorMessage);
-        Assert.AreEqual("stringOutput", successfulJobObj.LastRunOutput);
+        Assert.That(successfulJobObj.LastRunSuccessful, Is.True);
+        Assert.That(successfulJobObj.LastRunErrorMessage, Is.Null);
+        Assert.That(successfulJobObj.LastRunOutput, Is.EqualTo("stringOutput"));
 
     }
     

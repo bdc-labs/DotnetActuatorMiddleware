@@ -50,9 +50,9 @@ public class HealthEndpointMiddlewareTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(ContentType, allowedContext.Response.ContentType);
-        Assert.AreEqual(200, allowedContext.Response.StatusCode);
-        Assert.NotNull(allowedContext.Response.Body);
+        Assert.That(allowedContext.Response.ContentType, Is.EqualTo(ContentType));
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(200));
+        Assert.That(allowedContext.Response.Body, Is.Not.Null);
 
     }
     
@@ -77,14 +77,14 @@ public class HealthEndpointMiddlewareTests
 
         var server = host.GetTestServer();
 
-        var allowedContext = await server.SendAsync((c =>
+        var rejectedContext = await server.SendAsync((c =>
         {
             c.Connection.RemoteIpAddress = IPAddress.Parse(actualIp);
             c.Request.Path = EndpointPath;
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(401, allowedContext.Response.StatusCode);
+        Assert.That(rejectedContext.Response.StatusCode, Is.EqualTo(401));
     }
 
     [Test(Description = "Return 404 if health endpoint not registered")]
@@ -104,7 +104,7 @@ public class HealthEndpointMiddlewareTests
 
         var response = await host.GetTestClient().GetAsync(EndpointPath);
         
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
     
     [Test(Description = "Health endpoint OK response")]
@@ -130,24 +130,24 @@ public class HealthEndpointMiddlewareTests
 
         var responseJson = JObject.Parse(response.Content.ReadAsStringAsync().Result);
 
-        Assert.AreEqual(ContentType, response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo(ContentType));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         
-        Assert.NotNull(responseJson);
-        Assert.True(responseJson.ContainsKey("healthy"));
-        Assert.AreEqual(true, bool.Parse(responseJson["healthy"]!.ToString()));
-        Assert.True(responseJson.ContainsKey("healthy_test"));
+        Assert.That(responseJson, Is.Not.Null);
+        Assert.That(responseJson.ContainsKey("healthy"), Is.True);
+        Assert.That(bool.Parse(responseJson["healthy"]!.ToString()), Is.True);
+        Assert.That(responseJson.ContainsKey("healthy_test"), Is.True);
 
         var healthCheckObj = (JObject) responseJson["healthy_test"]!;
-        Assert.NotNull(healthCheckObj);
-        Assert.True(healthCheckObj!.ContainsKey("healthy"));
-        Assert.AreEqual(true, bool.Parse(healthCheckObj["healthy"]!.ToString()));
-        Assert.True(healthCheckObj.ContainsKey("responseData"));
+        Assert.That(healthCheckObj, Is.Not.Null);
+        Assert.That(healthCheckObj!.ContainsKey("healthy"), Is.True);
+        Assert.That(bool.Parse(healthCheckObj["healthy"]!.ToString()), Is.True);
+        Assert.That(healthCheckObj.ContainsKey("responseData"), Is.True);
         
         var healthCheckResponseDataObj = (JObject) responseJson["healthy_test"]!["responseData"]!;
-        Assert.NotNull(healthCheckResponseDataObj);
-        Assert.True(healthCheckResponseDataObj!.ContainsKey("message"));
-        Assert.AreEqual("OK", healthCheckResponseDataObj["message"]!.ToString());
+        Assert.That(healthCheckResponseDataObj, Is.Not.Null);
+        Assert.That(healthCheckResponseDataObj!.ContainsKey("message"), Is.True);
+        Assert.That(healthCheckResponseDataObj["message"]!.ToString(), Is.EqualTo("OK"));
     }
     
     [Test(Description = "Health endpoint unhealthy response")]
@@ -173,24 +173,24 @@ public class HealthEndpointMiddlewareTests
 
         var responseJson = JObject.Parse(response.Content.ReadAsStringAsync().Result);
 
-        Assert.AreEqual(ContentType, response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.ServiceUnavailable);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo(ContentType));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.ServiceUnavailable));
         
-        Assert.NotNull(responseJson);
-        Assert.True(responseJson.ContainsKey("healthy"));
-        Assert.AreEqual(false, bool.Parse(responseJson["healthy"]!.ToString()));
-        Assert.True(responseJson.ContainsKey("unhealthy_test"));
+        Assert.That(responseJson, Is.Not.Null);
+        Assert.That(responseJson.ContainsKey("healthy"), Is.True);
+        Assert.That(bool.Parse(responseJson["healthy"]!.ToString()), Is.False);
+        Assert.That(responseJson.ContainsKey("unhealthy_test"), Is.True);
 
         var healthCheckObj = (JObject) responseJson["unhealthy_test"]!;
-        Assert.NotNull(healthCheckObj);
-        Assert.True(healthCheckObj.ContainsKey("healthy"));
-        Assert.AreEqual(false, bool.Parse(healthCheckObj["healthy"]!.ToString()));
-        Assert.True(healthCheckObj.ContainsKey("responseData"));
+        Assert.That(healthCheckObj, Is.Not.Null);
+        Assert.That(healthCheckObj.ContainsKey("healthy"), Is.True);
+        Assert.That(bool.Parse(healthCheckObj["healthy"]!.ToString()), Is.False);
+        Assert.That(healthCheckObj.ContainsKey("responseData"), Is.True);
         
         var healthCheckResponseDataObj = (JObject) responseJson["unhealthy_test"]!["responseData"]!;
-        Assert.NotNull(healthCheckResponseDataObj);
-        Assert.True(healthCheckResponseDataObj.ContainsKey("message"));
-        Assert.AreEqual("FAILED", healthCheckResponseDataObj["message"]!.ToString());
+        Assert.That(healthCheckResponseDataObj, Is.Not.Null);
+        Assert.That(healthCheckResponseDataObj.ContainsKey("message"), Is.True);
+        Assert.That(healthCheckResponseDataObj["message"]!.ToString(), Is.EqualTo("FAILED"));
     }
     
     [Test(Description = "Health endpoint single unhealthy check")]
@@ -221,12 +221,12 @@ public class HealthEndpointMiddlewareTests
 
         var responseJson = JObject.Parse(response.Content.ReadAsStringAsync().Result);
 
-        Assert.AreEqual(ContentType, response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.ServiceUnavailable);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo(ContentType));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.ServiceUnavailable));
         
-        Assert.NotNull(responseJson);
-        Assert.True(responseJson.ContainsKey("healthy"));
-        Assert.AreEqual(false, bool.Parse(responseJson["healthy"]!.ToString()));
+        Assert.That(responseJson, Is.Not.Null);
+        Assert.That(responseJson.ContainsKey("healthy"), Is.True);
+        Assert.That(bool.Parse(responseJson["healthy"]!.ToString()), Is.False);
     }
     
 }

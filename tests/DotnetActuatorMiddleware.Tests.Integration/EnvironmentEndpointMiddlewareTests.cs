@@ -41,9 +41,9 @@ public class EnvironmentEndpointMiddlewareTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual("application/json", allowedContext.Response.ContentType);
-        Assert.AreEqual(200, allowedContext.Response.StatusCode);
-        Assert.NotNull(allowedContext.Response.Body);
+        Assert.That(allowedContext.Response.ContentType, Is.EqualTo("application/json"));
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(200));
+        Assert.That(allowedContext.Response.Body, Is.Not.Null);
 
     }
     
@@ -75,7 +75,7 @@ public class EnvironmentEndpointMiddlewareTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(401, allowedContext.Response.StatusCode);
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(401));
     }
     
     [Test(Description = "Return 404 if environment endpoint not registered")]
@@ -95,7 +95,7 @@ public class EnvironmentEndpointMiddlewareTests
 
         var response = await host.GetTestClient().GetAsync("/env");
         
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
     
     [Test(Description = "Endpoint returns ok with environment details")]
@@ -116,12 +116,12 @@ public class EnvironmentEndpointMiddlewareTests
 
         var responseJson = JsonConvert.DeserializeObject<ApplicationEnvironment>(response.Content.ReadAsStringAsync().Result);
 
-        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo("application/json"));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         
-        Assert.NotNull(responseJson);
-        Assert.NotZero(responseJson!.EnvironmentVariables.Count);
-        Assert.AreEqual(Environment.ProcessId, responseJson.ProcessId);
-        Assert.AreEqual(Environment.Version.ToString(), responseJson.FrameworkVersion);
+        Assert.That(responseJson, Is.Not.Null);
+        Assert.That(responseJson!.EnvironmentVariables.Count, Is.Not.Zero);
+        Assert.That(responseJson.ProcessId, Is.EqualTo(Environment.ProcessId));
+        Assert.That(responseJson.FrameworkVersion, Is.EqualTo(Environment.Version.ToString()));
     }
 }

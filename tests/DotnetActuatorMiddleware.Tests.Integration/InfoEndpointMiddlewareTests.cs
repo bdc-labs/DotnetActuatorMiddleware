@@ -40,9 +40,9 @@ public class InfoEndpointMiddlewareTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual("application/json", allowedContext.Response.ContentType);
-        Assert.AreEqual(200, allowedContext.Response.StatusCode);
-        Assert.NotNull(allowedContext.Response.Body);
+        Assert.That(allowedContext.Response.ContentType, Is.EqualTo("application/json"));
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(200));
+        Assert.That(allowedContext.Response.Body, Is.Not.Null);
 
     }
     
@@ -74,7 +74,7 @@ public class InfoEndpointMiddlewareTests
             c.Request.Method = HttpMethods.Get;
         }));
         
-        Assert.AreEqual(401, allowedContext.Response.StatusCode);
+        Assert.That(allowedContext.Response.StatusCode, Is.EqualTo(401));
     }
 
     [Test(Description = "Return 404 if info endpoint not registered")]
@@ -94,7 +94,7 @@ public class InfoEndpointMiddlewareTests
 
         var response = await host.GetTestClient().GetAsync("/info");
         
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
     
     [Test(Description = "Endpoint returns ok with assembly info")]
@@ -117,13 +117,13 @@ public class InfoEndpointMiddlewareTests
 
         var responseJson = JObject.Parse(response.Content.ReadAsStringAsync().Result);
         
-        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo("application/json"));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         
-        Assert.True(responseJson.ContainsKey("Name"));
-        Assert.True(responseJson.ContainsKey("Version"));
+        Assert.That(responseJson.ContainsKey("Name"), Is.True);
+        Assert.That(responseJson.ContainsKey("Version"), Is.True);
         
-        Assert.AreEqual(assemblyDetails.Name, responseJson["Name"]!.ToString());
-        Assert.AreEqual(assemblyDetails.Version!.ToString(), responseJson["Version"]!.ToString());
+        Assert.That(assemblyDetails.Name, Is.EqualTo(responseJson["Name"]!.ToString()));
+        Assert.That(assemblyDetails.Version!.ToString(), Is.EqualTo(responseJson["Version"]!.ToString()));
     }
 }
