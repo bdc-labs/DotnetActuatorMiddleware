@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v2.0.0...v2.1.0) (2024-03-03)
+
+
+### Features
+
+* Bump semantic-release deps ([dad05e7](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/dad05e7b3278d6ae532e523241458e4cd295cc9f))
+
 # [2.0.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v1.4.2...v2.0.0) (2024-03-03)
 
 
