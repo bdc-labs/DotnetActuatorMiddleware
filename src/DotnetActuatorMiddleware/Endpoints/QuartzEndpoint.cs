@@ -41,7 +41,7 @@ internal class QuartzEndpoint : ActuatorEndpoint
             }
             
             // Loop over all jobs in this scheduler instance and assemble their details
-            List<QuartzEndpointJob> jobs = new List<QuartzEndpointJob>();
+            List<QuartzEndpointJob> jobs = [];
             foreach (var jobKey in jobKeys)
             {
                 var job = registeredScheduler.GetJobDetail(jobKey).Result;
@@ -69,27 +69,27 @@ internal class QuartzEndpoint : ActuatorEndpoint
                 };
 
                 // If the job sets the last lastRunSuccessful key and it's actually a bool then include it in our output
-                if (job.JobDataMap.ContainsKey("lastRunSuccessful") && job.JobDataMap["lastRunSuccessful"] is bool)
+                if (job.JobDataMap.TryGetValue("lastRunSuccessful", out object? lastRunSuccessful) && lastRunSuccessful is bool)
                 {
-                    jobObj.LastRunSuccessful = (bool) job.JobDataMap["lastRunSuccessful"];
+                    jobObj.LastRunSuccessful = (bool) lastRunSuccessful;
                 }
 
                 // If the job sets the last lastErrorMessage key and it's a non-null and non-empty string then include it in our output
-                if (job.JobDataMap.ContainsKey("lastErrorMessage") && !string.IsNullOrWhiteSpace(job.JobDataMap["lastErrorMessage"].ToString()))
+                if (job.JobDataMap.TryGetValue("lastErrorMessage", out object? lastErrorMessage) && !string.IsNullOrWhiteSpace(lastErrorMessage.ToString()))
                 {
-                    jobObj.LastRunErrorMessage = job.JobDataMap["lastErrorMessage"].ToString();
+                    jobObj.LastRunErrorMessage = lastErrorMessage.ToString();
                 }
                 
                 // If the job sets the last lastErrorTimeUtc key and it's a DateTimeOffset then include it in our output
-                if (job.JobDataMap.ContainsKey("lastErrorTimeUtc") && job.JobDataMap["lastErrorTimeUtc"] is DateTimeOffset)
+                if (job.JobDataMap.TryGetValue("lastErrorTimeUtc", out object? lastErrorTimeUtc) && lastErrorTimeUtc is DateTimeOffset)
                 {
-                    jobObj.LastErrorTimeUtc = (DateTimeOffset) job.JobDataMap["lastErrorTimeUtc"];
+                    jobObj.LastErrorTimeUtc = (DateTimeOffset) lastErrorTimeUtc;
                 }
                 
                 // Allow job to include an arbitrary output object that we'll serialize to JSON
-                if (job.JobDataMap.ContainsKey("lastRunOutput"))
+                if (job.JobDataMap.TryGetValue("lastRunOutput", out object? lastRunOutput))
                 {
-                    jobObj.LastRunOutput = job.JobDataMap["lastRunOutput"];
+                    jobObj.LastRunOutput = lastRunOutput;
                 }
 
                 // Get details all triggers for this job

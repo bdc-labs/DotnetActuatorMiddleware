@@ -6,7 +6,7 @@ internal class EnvironmentEndpoint : ActuatorEndpoint
 {
     internal EnvironmentEndpoint(bool ipAllowListEnabled = false) : base(ipAllowListEnabled) { }
 
-    internal ApplicationEnvironment GetEnvironment()
+    internal static ApplicationEnvironment GetEnvironment()
     {
         return new ApplicationEnvironment();
     }

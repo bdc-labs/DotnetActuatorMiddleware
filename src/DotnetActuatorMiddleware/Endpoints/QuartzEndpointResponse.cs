@@ -8,7 +8,7 @@ public class QuartzEndpointResponse
 public class QuartzEndpointScheduler
 {
     public string? SchedulerStatus;
-    public List<QuartzEndpointJob> Jobs = new List<QuartzEndpointJob>();
+    public List<QuartzEndpointJob> Jobs = [];
 }
 
 public class QuartzEndpointJob
@@ -23,7 +23,7 @@ public class QuartzEndpointJob
     public object? LastRunOutput = null;
     public bool ConcurrentExecutionAllowed;
     public bool PersistJobData;
-    public List<QuartzEndpointJobTriggers> Triggers = new List<QuartzEndpointJobTriggers>();
+    public List<QuartzEndpointJobTriggers> Triggers = [];
 }
 
 public struct QuartzEndpointJobTriggers

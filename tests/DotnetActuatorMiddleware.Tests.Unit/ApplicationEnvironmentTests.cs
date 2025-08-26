@@ -22,7 +22,7 @@ public class ApplicationEnvironmentTests
     [Test]
     public void EnvironmentNoAppConfigurationTest()
     {
-        var appEnvDetails = new EnvironmentEndpoint().GetEnvironment();
+        var appEnvDetails = EnvironmentEndpoint.GetEnvironment();
 
         Assert.That(Process.GetCurrentProcess().StartTime, Is.EqualTo(appEnvDetails.ProcessStartTime));
         Assert.That(appEnvDetails.ProcessUptimeSecs, Is.Positive);
@@ -40,11 +40,11 @@ public class ApplicationEnvironmentTests
     public void EnvironmentWithAppConfigurationTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         ConfigurationRegistry.SetKey("memorySource", "testKey", "testValue");
 
-        var appEnvDetails = new EnvironmentEndpoint().GetEnvironment();
+        var appEnvDetails = EnvironmentEndpoint.GetEnvironment();
         
         Assert.That(Process.GetCurrentProcess().StartTime, Is.EqualTo(appEnvDetails.ProcessStartTime));
         Assert.That(appEnvDetails.ProcessUptimeSecs, Is.Positive);

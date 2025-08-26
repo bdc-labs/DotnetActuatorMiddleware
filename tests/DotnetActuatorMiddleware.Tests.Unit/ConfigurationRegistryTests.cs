@@ -21,7 +21,7 @@ public class ConfigurationRegistryTests
     public void AddSourceTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         Assert.That(ConfigurationRegistry.Sources.Count, Is.Not.Zero);
@@ -31,7 +31,7 @@ public class ConfigurationRegistryTests
     public void RemoveSourceTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         Assert.That(ConfigurationRegistry.Sources.ContainsKey("memorySource"), Is.True);
@@ -45,7 +45,7 @@ public class ConfigurationRegistryTests
     public void DuplicateSourceTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         Assert.That(ConfigurationRegistry.Sources.ContainsKey("memorySource"), Is.True);
@@ -61,7 +61,7 @@ public class ConfigurationRegistryTests
     public void RemoveAllSourcesTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         Assert.That(ConfigurationRegistry.Sources.Count, Is.Not.Zero);
@@ -75,7 +75,7 @@ public class ConfigurationRegistryTests
     public void SetValueTest()
     {
         var collection = new Dictionary<string, string>();
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         ConfigurationRegistry.SetKey("memorySource", "testKey", "testValue");
@@ -89,7 +89,7 @@ public class ConfigurationRegistryTests
     public void GetValueTest()
     {
         var collection = new Dictionary<string, string>() { { "testKey", "testValue" } };
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         var testValue = ConfigurationRegistry.GetKey("memorySource", "testKey");
@@ -102,7 +102,7 @@ public class ConfigurationRegistryTests
     public void GetConfigurationSectionTest()
     {
         var collection = new Dictionary<string, string>() { { "outerkey:innerkey", "testValue" } };
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         var testSection = ConfigurationRegistry.GetConfigurationSection("memorySource", "outerkey");
@@ -117,7 +117,7 @@ public class ConfigurationRegistryTests
     public void GetNonexistentValueTest()
     {
         var collection = new Dictionary<string, string>() { { "testKey", "testValue" } };
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
         var testValue = ConfigurationRegistry.GetKey("memorySource", "testKey111");
@@ -138,7 +138,7 @@ public class ConfigurationRegistryTests
     public void GetAllValuesTest()
     {
         var collection = new Dictionary<string, string>() { { "key1", "value1" }, { "key2", "value2" }, { "key3", "value3" } };
-        var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
 
         var configValues = ConfigurationRegistry.GetAllValuesFromSource("memorySource");
@@ -155,9 +155,9 @@ public class ConfigurationRegistryTests
         var collection2 = new Dictionary<string, string>() { { "key2", "value2" } };
         var collection3 = new Dictionary<string, string>() { { "key3", "value3" } };
         
-        var config1 = new ConfigurationBuilder().AddInMemoryCollection(collection1).Build();
-        var config2 = new ConfigurationBuilder().AddInMemoryCollection(collection2).Build();
-        var config3 = new ConfigurationBuilder().AddInMemoryCollection(collection3).Build();
+        var config1 = new ConfigurationBuilder().AddInMemoryCollection(collection1!).Build();
+        var config2 = new ConfigurationBuilder().AddInMemoryCollection(collection2!).Build();
+        var config3 = new ConfigurationBuilder().AddInMemoryCollection(collection3!).Build();
         
         ConfigurationRegistry.AddConfigurationSource(config1, "memorySource1");
         ConfigurationRegistry.AddConfigurationSource(config2, "memorySource2");

@@ -7,7 +7,7 @@ public static class ActuatorConfiguration
     /// <summary>
     /// List of IP ranges that are allowed to access the actuator endpoints
     /// </summary>
-    internal static List<IPAddressRange> AllowedRanges = new();
+    internal static IPAddressRange[] AllowedRanges = [];
     
     /// <summary>
     /// Clears and then sets the list of IPs allowed to access any actuator endpoints with IP restrictions enabled.
@@ -34,8 +34,7 @@ public static class ActuatorConfiguration
             }
         }
         
-        AllowedRanges.Clear();
-        AllowedRanges = allowedRangesList;
+        AllowedRanges = allowedRangesList.ToArray();
     }
     
     /// <summary>
@@ -43,16 +42,15 @@ public static class ActuatorConfiguration
     /// </summary>
     /// <param name="ipRanges">A list of <see cref="IPAddressRange"/> objects</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public static void SetEndpointAllowedIps(List<IPAddressRange> ipRanges)
+    public static void SetEndpointAllowedIps(IPAddressRange[] ipRanges)
     {
-        if (ipRanges == null) throw new ArgumentNullException(nameof(ipRanges));
+        ArgumentNullException.ThrowIfNull(ipRanges);
 
-        if (ipRanges.Count == 0)
+        if (ipRanges.Length == 0)
         {
             return;
         }
-
-        AllowedRanges.Clear();
+        
         AllowedRanges = ipRanges;
     }
 
@@ -61,6 +59,6 @@ public static class ActuatorConfiguration
     /// </summary>
     public static void ClearIpAllowList()
     {
-        AllowedRanges.Clear();
+        AllowedRanges = [];
     }
 }

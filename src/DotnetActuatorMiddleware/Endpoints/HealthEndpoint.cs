@@ -6,7 +6,7 @@ internal class HealthEndpoint : ActuatorEndpoint
 {
     internal HealthEndpoint(bool ipAllowListEnabled = false) : base(ipAllowListEnabled) { }
 
-    internal ApplicationHealthStatus GetHealth()
+    internal static ApplicationHealthStatus GetHealth()
     {
         return HealthCheckRegistry.RunHealthChecks();
     }

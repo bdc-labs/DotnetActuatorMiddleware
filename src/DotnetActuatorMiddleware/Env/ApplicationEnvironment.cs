@@ -17,7 +17,7 @@ public class ApplicationEnvironment
     public string FrameworkVersion;
     public readonly Dictionary<string, string> EnvironmentVariables = new Dictionary<string, string>();
     public readonly Dictionary<string, Dictionary<string, string>> ApplicationConfiguration = new Dictionary<string, Dictionary<string, string>>();
-    internal readonly string LinuxDistroReleaseFile = "/etc/os-release";
+    private const string LinuxDistroReleaseFile = "/etc/os-release";
 
     /// <summary>
     /// Gather details about the environment the application is running in
@@ -65,8 +65,6 @@ public class ApplicationEnvironment
                     Os = "Linux/Unix";
                     break;
                 case PlatformID.Win32NT:
-                    Os = "Windows";
-                    break;
                 case PlatformID.Win32Windows:
                     Os = "Windows";
                     break;
@@ -88,7 +86,7 @@ public class ApplicationEnvironment
         }
     }
 
-    internal LinuxDistribution DetectLinuxDistribution()
+    private static LinuxDistribution DetectLinuxDistribution()
     {
         var releaseDetails = File.ReadAllLines(LinuxDistroReleaseFile);
 
@@ -101,7 +99,7 @@ public class ApplicationEnvironment
         return new LinuxDistribution {Name = distroName, Version = distroVersion};
     }
 
-    internal struct LinuxDistribution
+    private struct LinuxDistribution
     {
         public string? Name;
         public string? Version;

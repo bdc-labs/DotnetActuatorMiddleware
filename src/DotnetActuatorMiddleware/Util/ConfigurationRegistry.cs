@@ -119,7 +119,7 @@ public static class ConfigurationRegistry
                 continue;
             }
 
-            result.Add(child.Path, child.Value);
+            result.Add(child.Path, child.Value!);
 
         }
 

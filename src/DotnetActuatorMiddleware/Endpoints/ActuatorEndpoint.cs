@@ -11,8 +11,8 @@ internal class ActuatorEndpoint
         IpAllowListEnabled = ipAllowListEnabled;
     }
 
-    internal bool IpIsAllowed(IPAddress ipAddress)
+    internal static bool IpIsAllowed(IPAddress ipAddress)
     {
-        return ActuatorConfiguration.AllowedRanges.Count == 0 || ActuatorConfiguration.AllowedRanges.Any(r => r.Contains(ipAddress));
+        return ActuatorConfiguration.AllowedRanges.Length == 0 || ActuatorConfiguration.AllowedRanges.Any(r => r.Contains(ipAddress));
     }
 }

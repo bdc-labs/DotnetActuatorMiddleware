@@ -26,14 +26,12 @@ public static class ElasticsearchHealthCheck
                 .RequestTimeout(TimeSpan.FromSeconds(timeoutSecs))
                 .PingTimeout(TimeSpan.FromSeconds(timeoutSecs));
 
-            if (!serverCertificateValidation)
-            {
+            if (!serverCertificateValidation) {
                 // If server certificate validation is disabled then always return true when calling the validation callback
                 clientSettings.ServerCertificateValidationCallback((o, certificate, arg3, arg4) => true);
             }
 
-            if (!String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password))
-            {
+            if (!String.IsNullOrWhiteSpace(username) && !String.IsNullOrWhiteSpace(password)) {
                 clientSettings.Authentication(new BasicAuthentication(username, password));
             }
             
@@ -41,18 +39,15 @@ public static class ElasticsearchHealthCheck
             var lowlevelClient = new ElasticsearchClient(clientSettings);
 
             var clusterHealthResponse = lowlevelClient.Cluster.Health();
+            var healthResponse = new ElasticsearchHealthCheckResponse {
+                ClusterName = clusterHealthResponse.ClusterName, Status = clusterHealthResponse.Status.ToString(),
+            };
 
-            if (!clusterHealthResponse.ApiCallDetails.HasSuccessfulStatusCode)
-            {
-                return HealthResponse.Unhealthy(clusterHealthResponse.ApiCallDetails.OriginalException);
+            if (!clusterHealthResponse.ApiCallDetails.HasSuccessfulStatusCode) {
+                return clusterHealthResponse.ApiCallDetails.OriginalException is null ? HealthResponse.Unhealthy() : HealthResponse.Unhealthy(clusterHealthResponse.ApiCallDetails.OriginalException);
             }
 
-            if (clusterHealthResponse.Status != HealthStatus.Green)
-            {
-                return HealthResponse.Unhealthy(new ElasticsearchHealthCheckResponse { ClusterName = clusterHealthResponse.ClusterName, Status = clusterHealthResponse.Status.ToString() });
-            }
-            
-            return HealthResponse.Healthy(new ElasticsearchHealthCheckResponse { ClusterName = clusterHealthResponse.ClusterName, Status = clusterHealthResponse.Status.ToString() });
+            return clusterHealthResponse.Status != HealthStatus.Green ? HealthResponse.Unhealthy(healthResponse) : HealthResponse.Healthy(healthResponse);
         }
         catch (Exception e)
         {

@@ -151,7 +151,8 @@ public class QuartzEndpointTests
 
         var responseObj = JsonConvert.DeserializeObject<QuartzEndpointResponse>(response.Content.ReadAsStringAsync().Result);
         
-        Assert.That(responseObj.Schedulers.Count, Is.EqualTo(1));
+        Assert.That(responseObj, Is.Not.Null);
+        Assert.That(responseObj!.Schedulers.Count, Is.EqualTo(1));
         Assert.That(responseObj.Schedulers, Contains.Key("DefaultQuartzScheduler"));
         Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus, Is.EqualTo("STARTED"));
 
@@ -219,7 +220,8 @@ public class QuartzEndpointTests
         
         var responseObj = JsonConvert.DeserializeObject<QuartzEndpointResponse>(response.Content.ReadAsStringAsync().Result);
         
-        Assert.That(responseObj.Schedulers.Count, Is.EqualTo(1));
+        Assert.That(responseObj, Is.Not.Null);
+        Assert.That(responseObj!.Schedulers.Count, Is.EqualTo(1));
         Assert.That(responseObj.Schedulers, Contains.Key("DefaultQuartzScheduler"));
         Assert.That(responseObj.Schedulers["DefaultQuartzScheduler"].SchedulerStatus, Is.EqualTo("STARTED"));
 

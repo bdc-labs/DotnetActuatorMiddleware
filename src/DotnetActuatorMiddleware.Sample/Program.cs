@@ -7,7 +7,7 @@ var app = builder.Build();
 
 // Register configuration sources for static use and environment endpoint visibility
 var collection = new Dictionary<string, string>() { { "key1", "value1" }, { "key2", "value2" } };
-var config1 = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
+var config1 = new ConfigurationBuilder().AddInMemoryCollection(collection!).Build();
 var config2 = new ConfigurationBuilder().SetBasePath(builder.Environment.ContentRootPath).AddJsonFile("config.json", true).Build();
 ConfigurationRegistry.AddConfigurationSource(config1, "memorySource");
 ConfigurationRegistry.AddConfigurationSource(config2, "jsonSource");
