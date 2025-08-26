@@ -11,8 +11,8 @@
   "license": "MIT",
   "scripts": {
     "test:unit": "dotnet test tests/DotnetActuatorMiddleware.Tests.Unit/DotnetActuatorMiddleware.Tests.Unit.csproj",
-    "start:test:stack": "docker-compose up -d",
-    "stop:test:stack": "docker-compose down",
+    "start:test:stack": "docker compose up -d",
+    "stop:test:stack": "docker compose down",
     "test:integration": "dotnet test tests/DotnetActuatorMiddleware.Tests.Integration/DotnetActuatorMiddleware.Tests.Integration.csproj",
     "semantic-release": ""
   },
