@@ -14,7 +14,7 @@ services:
     ports:
       - 127.0.0.1:19306:3306
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.2
     container_name: dotnetactuatormiddleware_elasticsearch
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://127.0.0.1:9200/" ]
@@ -27,7 +27,7 @@ services:
     ports:
       - 127.0.0.1:19200:9200
   elasticsearch-auth:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.2
     container_name: dotnetactuatormiddleware_elasticsearch_auth
     healthcheck:
       test: [ "CMD", "curl", "-f", "-u", "elastic:changeme", "http://127.0.0.1:9200/" ]
@@ -41,7 +41,7 @@ services:
     ports:
       - 127.0.0.1:19201:9200
   elasticsearch-ssl:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.2
     container_name: dotnetactuatormiddleware_elasticsearch_ssl
     healthcheck:
       test: [ "CMD", "curl", "-k", "-f", "-u", "elastic:changeme", "https://127.0.0.1:9200/" ]

@@ -10,7 +10,6 @@
   "author": "BDC Labs (https://github.com/bdc-labs)",
   "license": "MIT",
   "scripts": {
-    "prepare": "is-ci || husky install",
     "test:unit": "dotnet test tests/DotnetActuatorMiddleware.Tests.Unit/DotnetActuatorMiddleware.Tests.Unit.csproj",
     "start:test:stack": "docker-compose up -d",
     "stop:test:stack": "docker-compose down",
@@ -25,9 +24,7 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.2.6",
     "@droidsolutions-oss/semantic-release-nuget": "^2.0.1",
-    "semantic-release-dotnet": "^1.0.0",
-    "husky": "^9.0.11",
-    "is-ci": "^3.0.1"
+    "semantic-release-dotnet": "^1.0.0"
   },
   "husky": {
     "hooks": {

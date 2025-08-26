@@ -24,7 +24,7 @@ public class ConfigurationRegistryTests
         var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
-        Assert.NotZero(ConfigurationRegistry.Sources.Count);
+        Assert.That(ConfigurationRegistry.Sources.Count, Is.Not.Zero);
     }
     
     [Test(Description = "Remove a configuration source")]
@@ -34,11 +34,11 @@ public class ConfigurationRegistryTests
         var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
-        Assert.True(ConfigurationRegistry.Sources.ContainsKey("memorySource"));
+        Assert.That(ConfigurationRegistry.Sources.ContainsKey("memorySource"), Is.True);
         
         ConfigurationRegistry.RemoveConfigurationSource("memorySource");
         
-        Assert.False(ConfigurationRegistry.Sources.ContainsKey("memorySource"));
+        Assert.That(ConfigurationRegistry.Sources.ContainsKey("memorySource"), Is.False);
     }
     
     [Test(Description = "Try to register a duplicate configuration source")]
@@ -48,7 +48,7 @@ public class ConfigurationRegistryTests
         var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
-        Assert.True(ConfigurationRegistry.Sources.ContainsKey("memorySource"));
+        Assert.That(ConfigurationRegistry.Sources.ContainsKey("memorySource"), Is.True);
 
         Assert.Catch<InvalidOperationException>(() =>
         {
@@ -64,11 +64,11 @@ public class ConfigurationRegistryTests
         var config = new ConfigurationBuilder().AddInMemoryCollection(collection).Build();
         ConfigurationRegistry.AddConfigurationSource(config, "memorySource");
         
-        Assert.NotZero(ConfigurationRegistry.Sources.Count);
+        Assert.That(ConfigurationRegistry.Sources.Count, Is.Not.Zero);
         
         ConfigurationRegistry.RemoveAllConfigurationSources();
         
-        Assert.Zero(ConfigurationRegistry.Sources.Count);
+        Assert.That(ConfigurationRegistry.Sources.Count, Is.Zero);
     }
     
     [Test(Description = "Set a value in a configuration source")]
@@ -81,8 +81,8 @@ public class ConfigurationRegistryTests
         ConfigurationRegistry.SetKey("memorySource", "testKey", "testValue");
         var testValue = ConfigurationRegistry.GetKey("memorySource", "testKey");
         
-        Assert.NotNull(testValue);
-        Assert.AreEqual("testValue", testValue);
+        Assert.That(testValue, Is.Not.Null);
+        Assert.That(testValue, Is.EqualTo("testValue"));
     }
     
     [Test(Description = "Get a value from a configuration source")]
@@ -94,8 +94,8 @@ public class ConfigurationRegistryTests
         
         var testValue = ConfigurationRegistry.GetKey("memorySource", "testKey");
         
-        Assert.NotNull(testValue);
-        Assert.AreEqual("testValue", testValue);
+        Assert.That(testValue, Is.Not.Null);
+        Assert.That(testValue, Is.EqualTo("testValue"));
     }
     
     [Test(Description = "Get a configuration section from a configuration source")]
@@ -108,9 +108,9 @@ public class ConfigurationRegistryTests
         var testSection = ConfigurationRegistry.GetConfigurationSection("memorySource", "outerkey");
         var testSectionChildKey = testSection.GetChildren().ToList()[0];
         
-        Assert.NotNull(testSectionChildKey);
-        Assert.AreEqual("innerkey", testSectionChildKey.Key);
-        Assert.AreEqual("testValue", testSectionChildKey.Value);
+        Assert.That(testSectionChildKey,  Is.Not.Null);
+        Assert.That(testSectionChildKey.Key, Is.EqualTo("innerkey"));
+        Assert.That(testSectionChildKey.Value, Is.EqualTo("testValue"));
     }
     
     [Test(Description = "Get non-existent key from source")]
@@ -122,7 +122,7 @@ public class ConfigurationRegistryTests
         
         var testValue = ConfigurationRegistry.GetKey("memorySource", "testKey111");
         
-        Assert.IsNull(testValue);
+        Assert.That(testValue, Is.Null);
     }
     
     [Test(Description = "Try to get key from non-existent source")]
@@ -143,9 +143,9 @@ public class ConfigurationRegistryTests
 
         var configValues = ConfigurationRegistry.GetAllValuesFromSource("memorySource");
         
-        Assert.Contains("key1", configValues.Keys);
-        Assert.Contains("key2", configValues.Keys);
-        Assert.Contains("key3", configValues.Keys);
+        Assert.That(configValues.Keys, Contains.Item("key1"));
+        Assert.That(configValues.Keys, Contains.Item("key2"));
+        Assert.That(configValues.Keys, Contains.Item("key3"));
     }
     
     [Test(Description = "Multiple sources")]
@@ -167,12 +167,12 @@ public class ConfigurationRegistryTests
         var configValue2 = ConfigurationRegistry.GetKey("memorySource2", "key2");
         var configValue3 = ConfigurationRegistry.GetKey("memorySource3", "key3");
         
-        Assert.NotNull(configValue1);
-        Assert.AreEqual("value1", configValue1);
-        Assert.NotNull(configValue2);
-        Assert.AreEqual("value2", configValue2);
-        Assert.NotNull(configValue3);
-        Assert.AreEqual("value3", configValue3);
+        Assert.That(configValue1, Is.Not.Null);
+        Assert.That(configValue1, Is.EqualTo("value1"));
+        Assert.That(configValue2, Is.Not.Null);
+        Assert.That(configValue2, Is.EqualTo("value2"));
+        Assert.That(configValue3, Is.Not.Null);
+        Assert.That(configValue3, Is.EqualTo("value3"));
     }
     
     

@@ -24,7 +24,7 @@ public class HealthCheckRegistryTests
 
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
         
-        Assert.True(healthCheckResults.Results["healthy_test"].IsHealthy);
+        Assert.That(healthCheckResults.Results["healthy_test"].IsHealthy,  Is.True);
     }
     
     [Test(Description = "Check returns unhealthy")]
@@ -37,7 +37,7 @@ public class HealthCheckRegistryTests
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
         
-        Assert.False(healthCheckResults.Results["unhealthy_test"].IsHealthy);
+        Assert.That(healthCheckResults.Results["unhealthy_test"].IsHealthy,  Is.False);
     }
     
     [Test(Description = "Check returns unhealthy with exception message as string")]
@@ -50,10 +50,10 @@ public class HealthCheckRegistryTests
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
         
-        Assert.False(healthCheckResults.Results["unhealthy_test"].IsHealthy);
-        Assert.NotNull(healthCheckResults.Results["unhealthy_test"].Response);
-        Assert.IsInstanceOf<String>(healthCheckResults.Results["unhealthy_test"].Response);
-        Assert.True(healthCheckResults.Results["unhealthy_test"].Response!.ToString()!.StartsWith("EXCEPTION: "));
+        Assert.That(healthCheckResults.Results["unhealthy_test"].IsHealthy, Is.False);
+        Assert.That(healthCheckResults.Results["unhealthy_test"].Response, Is.Not.Null);
+        Assert.That(healthCheckResults.Results["unhealthy_test"].Response, Is.InstanceOf<string>());
+        Assert.That(healthCheckResults.Results["unhealthy_test"].Response!.ToString()!.StartsWith("EXCEPTION: "), Is.True);
     }
     
     [Test(Description = "Application wide health is true if all checks pass")]
@@ -71,7 +71,7 @@ public class HealthCheckRegistryTests
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
         
-        Assert.True(healthCheckResults.IsHealthy);
+        Assert.That(healthCheckResults.IsHealthy,  Is.True);
     }
     
     [Test(Description = "Application wide health is false if any check fails")]
@@ -89,7 +89,7 @@ public class HealthCheckRegistryTests
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
         
-        Assert.False(healthCheckResults.IsHealthy);
+        Assert.That(healthCheckResults.IsHealthy,  Is.False);
     }
 
     [Test(Description = "Registration with a string output")]
@@ -102,7 +102,7 @@ public class HealthCheckRegistryTests
         });
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
-        Assert.AreEqual(healthCheckResults.Results["test"].Response, testVal);
+        Assert.That(healthCheckResults.Results["test"].Response, Is.EqualTo(testVal));
     }
     
     [Test(Description = "Registration with an output object")]
@@ -115,7 +115,7 @@ public class HealthCheckRegistryTests
         });
         
         var healthCheckResults = HealthCheckRegistry.RunHealthChecks();
-        Assert.AreEqual(healthCheckResults.Results["test"].Response, testVal);
+        Assert.That(healthCheckResults.Results["test"].Response, Is.EqualTo(testVal));
     }
     
 }

@@ -23,9 +23,9 @@ public class IpAccessRestrictionTests
 
         var actuatorEndpoint = new ActuatorEndpoint(true);
 
-        Assert.True(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.1")));
-        Assert.True(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("10.255.255.1")));
-        Assert.False(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("172.21.1.1")));
+        Assert.That(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.1")),  Is.True);
+        Assert.That(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("10.255.255.1")), Is.True);
+        Assert.That(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("172.21.1.1")), Is.False);
         
     }
     
@@ -38,8 +38,8 @@ public class IpAccessRestrictionTests
 
         var actuatorEndpoint = new ActuatorEndpoint(true);
         
-        Assert.True(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.1")));
-        Assert.False(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.2")));
+        Assert.That(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.1")),  Is.True);
+        Assert.That(actuatorEndpoint.IpIsAllowed(IPAddress.Parse("192.168.1.2")), Is.False);
 
     }
     

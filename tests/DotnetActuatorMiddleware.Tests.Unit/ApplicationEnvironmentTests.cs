@@ -24,16 +24,16 @@ public class ApplicationEnvironmentTests
     {
         var appEnvDetails = new EnvironmentEndpoint().GetEnvironment();
 
-        Assert.AreEqual(Process.GetCurrentProcess().StartTime, appEnvDetails.ProcessStartTime);
-        Assert.Positive(appEnvDetails.ProcessUptimeSecs);
+        Assert.That(Process.GetCurrentProcess().StartTime, Is.EqualTo(appEnvDetails.ProcessStartTime));
+        Assert.That(appEnvDetails.ProcessUptimeSecs, Is.Positive);
         
-        Assert.AreEqual(Environment.Version.ToString(), appEnvDetails.FrameworkVersion);
-        Assert.False(String.IsNullOrWhiteSpace(appEnvDetails.OsVersion));
-        Assert.AreNotEqual("Unknown", appEnvDetails.Os);
+        Assert.That(Environment.Version.ToString(), Is.EqualTo(appEnvDetails.FrameworkVersion));
+        Assert.That(String.IsNullOrWhiteSpace(appEnvDetails.OsVersion), Is.False);
+        Assert.That(appEnvDetails.Os, Is.Not.EqualTo("Unknown"));
         
-        Assert.NotZero(appEnvDetails.EnvironmentVariables.Count);
+        Assert.That(appEnvDetails.EnvironmentVariables.Count, Is.Not.Zero);
         
-        Assert.Zero(appEnvDetails.ApplicationConfiguration.Count);
+        Assert.That(appEnvDetails.ApplicationConfiguration.Count, Is.Zero);
     }
 
     [Test]
@@ -46,20 +46,20 @@ public class ApplicationEnvironmentTests
 
         var appEnvDetails = new EnvironmentEndpoint().GetEnvironment();
         
-        Assert.AreEqual(Process.GetCurrentProcess().StartTime, appEnvDetails.ProcessStartTime);
-        Assert.Positive(appEnvDetails.ProcessUptimeSecs);
+        Assert.That(Process.GetCurrentProcess().StartTime, Is.EqualTo(appEnvDetails.ProcessStartTime));
+        Assert.That(appEnvDetails.ProcessUptimeSecs, Is.Positive);
         
-        Assert.AreEqual(Environment.Version.ToString(), appEnvDetails.FrameworkVersion);
-        Assert.False(String.IsNullOrWhiteSpace(appEnvDetails.OsVersion));
-        Assert.AreNotEqual("Unknown", appEnvDetails.Os);
+        Assert.That(Environment.Version.ToString(), Is.EqualTo(appEnvDetails.FrameworkVersion));
+        Assert.That(String.IsNullOrWhiteSpace(appEnvDetails.OsVersion), Is.False);
+        Assert.That(appEnvDetails.Os, Is.Not.EqualTo("Unknown"));
         
-        Assert.NotZero(appEnvDetails.EnvironmentVariables.Count);
+        Assert.That(appEnvDetails.EnvironmentVariables.Count, Is.Not.Zero);
         
-        Assert.NotZero(appEnvDetails.ApplicationConfiguration.Count);
-        Assert.True(appEnvDetails.ApplicationConfiguration.ContainsKey("memorySource"));
-        Assert.NotNull(appEnvDetails.ApplicationConfiguration["memorySource"]);
-        Assert.True(appEnvDetails.ApplicationConfiguration["memorySource"].ContainsKey("testKey"));
-        Assert.AreEqual("testValue", appEnvDetails.ApplicationConfiguration["memorySource"]["testKey"]);
+        Assert.That(appEnvDetails.ApplicationConfiguration.Count, Is.Not.Zero);
+        Assert.That(appEnvDetails.ApplicationConfiguration.ContainsKey("memorySource"),  Is.True);
+        Assert.That(appEnvDetails.ApplicationConfiguration["memorySource"], Is.Not.Null);
+        Assert.That(appEnvDetails.ApplicationConfiguration["memorySource"].ContainsKey("testKey"), Is.True);
+        Assert.That(appEnvDetails.ApplicationConfiguration["memorySource"]["testKey"], Is.EqualTo("testValue"));
     }
     
 }
