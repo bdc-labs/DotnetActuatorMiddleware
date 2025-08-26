@@ -1,13 +1,14 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace DotnetActuatorMiddleware.Health;
 
 public class HealthResponse
 {
-    [JsonProperty("healthy")]
-    internal readonly bool IsHealthy;
-    [JsonProperty("responseData", NullValueHandling = NullValueHandling.Ignore)]
-    internal readonly object? Response;
+    [JsonPropertyName("healthy")]
+    public bool IsHealthy { get; set; }
+    [JsonPropertyName("responseData")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? Response { get; set; }
 
     internal HealthResponse(bool isHealthy, object statusObject)
     {

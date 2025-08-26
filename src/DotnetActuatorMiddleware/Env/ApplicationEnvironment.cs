@@ -7,17 +7,17 @@ namespace DotnetActuatorMiddleware.Env;
 
 public class ApplicationEnvironment
 {
-    public int ProcessId;
-    public DateTime ProcessStartTime;
-    public double ProcessUptimeSecs;
-    public string CommandLine;
-    public string Hostname;
-    public string Os;
-    public string OsVersion;
-    public string FrameworkVersion;
-    public readonly Dictionary<string, string> EnvironmentVariables = new Dictionary<string, string>();
-    public readonly Dictionary<string, Dictionary<string, string>> ApplicationConfiguration = new Dictionary<string, Dictionary<string, string>>();
-    internal readonly string LinuxDistroReleaseFile = "/etc/os-release";
+    public int ProcessId { get; set; }
+    public DateTime ProcessStartTime { get; set; }
+    public double ProcessUptimeSecs { get; set; }
+    public string CommandLine { get; set; }
+    public string Hostname { get; set; }
+    public string Os { get; set; }
+    public string OsVersion { get; set; }
+    public string FrameworkVersion { get; set; }
+    public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>();
+    public Dictionary<string, Dictionary<string, string>> ApplicationConfiguration { get; } = new Dictionary<string, Dictionary<string, string>>();
+    private const string LinuxDistroReleaseFile = "/etc/os-release";
 
     /// <summary>
     /// Gather details about the environment the application is running in
@@ -65,8 +65,6 @@ public class ApplicationEnvironment
                     Os = "Linux/Unix";
                     break;
                 case PlatformID.Win32NT:
-                    Os = "Windows";
-                    break;
                 case PlatformID.Win32Windows:
                     Os = "Windows";
                     break;
@@ -88,7 +86,7 @@ public class ApplicationEnvironment
         }
     }
 
-    internal LinuxDistribution DetectLinuxDistribution()
+    private static LinuxDistribution DetectLinuxDistribution()
     {
         var releaseDetails = File.ReadAllLines(LinuxDistroReleaseFile);
 
@@ -101,7 +99,7 @@ public class ApplicationEnvironment
         return new LinuxDistribution {Name = distroName, Version = distroVersion};
     }
 
-    internal struct LinuxDistribution
+    private struct LinuxDistribution
     {
         public string? Name;
         public string? Version;

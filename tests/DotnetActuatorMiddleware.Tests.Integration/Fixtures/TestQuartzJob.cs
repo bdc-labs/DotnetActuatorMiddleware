@@ -5,8 +5,8 @@ namespace DotnetActuatorMiddleware.Tests.Integration.Fixtures;
 
 public class TestQuartzJob : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
-        return;
+        return Task.CompletedTask;
     }
 }

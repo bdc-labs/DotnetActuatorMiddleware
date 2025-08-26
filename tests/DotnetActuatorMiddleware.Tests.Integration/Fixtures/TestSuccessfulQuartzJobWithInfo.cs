@@ -9,8 +9,9 @@ namespace DotnetActuatorMiddleware.Tests.Integration.Fixtures;
 [PersistJobDataAfterExecution]
 public class TestSuccessfulQuartzJobWithInfo : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
         context.MarkJobSuccessful("stringOutput");
+        return Task.CompletedTask;
     }
 }

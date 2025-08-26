@@ -63,26 +63,29 @@ app.Run();
 [PersistJobDataAfterExecution]
 public class SuccessfulJob : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
         context.MarkJobSuccessful();
+        return Task.CompletedTask;
     }
 }
 
 [PersistJobDataAfterExecution]
 public class FailingJob : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
         context.MarkJobFailed("There was an error");
+        return Task.CompletedTask;
     }
 }
 
 [PersistJobDataAfterExecution]
 public class JobWithObject : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
         context.MarkJobSuccessful(new { message = "Job succeeded" });
+        return Task.CompletedTask;
     }
 }

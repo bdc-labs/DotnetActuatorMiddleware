@@ -1,16 +1,19 @@
+using System.Text.Json.Serialization;
+
 namespace DotnetActuatorMiddleware.Health;
 
 internal struct ApplicationHealthStatus
 {
     /// <summary>
-    /// Whether or not all health checks have passed
+    /// Whether all health checks have passed
     /// </summary>
-    public readonly bool IsHealthy;
+    [JsonPropertyName("healthy")]
+    public bool IsHealthy { get; set; }
 
     /// <summary>
     /// Array containing result of each registered health check
     /// </summary>
-    public readonly Dictionary<string, HealthResponse> Results;
+    public Dictionary<string, HealthResponse> Results { get; set; }
 
     public ApplicationHealthStatus(Dictionary<string, HealthResponse> results)
     {

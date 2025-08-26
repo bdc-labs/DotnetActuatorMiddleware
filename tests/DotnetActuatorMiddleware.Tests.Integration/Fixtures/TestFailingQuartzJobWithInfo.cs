@@ -7,8 +7,9 @@ namespace DotnetActuatorMiddleware.Tests.Integration.Fixtures;
 [PersistJobDataAfterExecution]
 public class TestFailingQuartzJobWithInfo : IJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    public Task Execute(IJobExecutionContext context)
     {
         context.MarkJobFailed("error");
+        return Task.CompletedTask;
     }
 }
