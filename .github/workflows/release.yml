@@ -31,7 +31,7 @@ jobs:
         run: npm run test:unit
       
       - name: Standup test stack
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Give containers time to start
         run: sleep 30s
@@ -42,7 +42,7 @@ jobs:
       
       - name: Stop test stack
         if: always()
-        run: docker-compose down
+        run: docker compose down
         
       - name: Build Nuget package
         run: dotnet pack --output nuget_output 
