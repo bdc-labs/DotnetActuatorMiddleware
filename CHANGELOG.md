@@ -1,3 +1,22 @@
+# [3.0.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v2.1.0...v3.0.0) (2025-08-26)
+
+
+### Features
+
+* Convert to system.text.json ([bf17580](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/bf175808389d11819e678ee597ec9c46f97ca6d7))
+* Massive clean up ([1b14f84](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/1b14f84088dd3d68976a3625c339de3ada2e60f0))
+* Update to .NET 9 ([399d8d8](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/399d8d8b327438f0b8a5d9e4c3f932510a03ce09))
+
+
+### Performance Improvements
+
+* Improve performance of ConfigurationRegistry ([d2bfcbf](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/d2bfcbfb0a9e4e9bdb31dc6bca748164ea38ad14))
+
+
+### BREAKING CHANGES
+
+* Converted to system.text.json and made quite a lot of code changes and while behaviour appears to be the same according to the test suite I will publish this as a major version bump to due the wide scope of changes.
+
 # [2.1.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v2.0.0...v2.1.0) (2024-03-03)
 
 
