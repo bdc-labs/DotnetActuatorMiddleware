@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -117,6 +118,7 @@ public class InfoEndpointMiddlewareTests
 
         var responseJson = JObject.Parse(response.Content.ReadAsStringAsync().Result);
         
+        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
         Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo("application/json"));
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         

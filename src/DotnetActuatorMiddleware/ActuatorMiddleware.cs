@@ -1,10 +1,8 @@
+using System.Text.Json;
+
 using DotnetActuatorMiddleware.Endpoints;
-using DotnetActuatorMiddleware.Health;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace DotnetActuatorMiddleware;
 
@@ -24,7 +22,7 @@ public static class ActuatorMiddleware
                 if (healthEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !ActuatorEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new { message = "Forbidden" }));
                     return;
                 }
 
@@ -36,15 +34,24 @@ public static class ActuatorMiddleware
                     context.Response.StatusCode = 503;
                 }
                 
-                // Assemble JSON payload
-                var jsonResponseRoot = new JObject();
-                jsonResponseRoot.Add("healthy", applicationHealthStatus.IsHealthy);
-                foreach ((string? key, HealthResponse? value) in applicationHealthStatus.Results)
+                // System.text.json doesn't appear to flatten the same way that Newtonsoft did so we do that here
+                // while trying to be somewhat memory efficient about it
+                await using var json = new Utf8JsonWriter(
+                    context.Response.BodyWriter,
+                    new JsonWriterOptions { SkipValidation = true }
+                );
+                
+                json.WriteStartObject();
+                json.WriteBoolean("healthy", applicationHealthStatus.IsHealthy);
+                
+                foreach (var kv in applicationHealthStatus.Results)
                 {
-                    jsonResponseRoot.Add(key, JToken.FromObject(value));
+                    json.WritePropertyName(kv.Key);
+                    JsonSerializer.Serialize(json, kv.Value);
                 }
 
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(jsonResponseRoot));
+                json.WriteEndObject();
+                await json.FlushAsync();
             }
             else
             {
@@ -67,13 +74,13 @@ public static class ActuatorMiddleware
                 if (infoEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !ActuatorEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new { message = "Forbidden" }));
                     return;
                 }
 
                 var infoReponse = InfoEndpoint.GetInfo();
 
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(infoReponse));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(infoReponse));
             }
             else
             {
@@ -96,11 +103,11 @@ public static class ActuatorMiddleware
                 if (environmentEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !ActuatorEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new { message = "Forbidden" }));
                     return;
                 }
 
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(EnvironmentEndpoint.GetEnvironment(), new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(EnvironmentEndpoint.GetEnvironment()));
 
             }
             else
@@ -124,11 +131,11 @@ public static class ActuatorMiddleware
                 if (quartzEndpoint.IpAllowListEnabled && context.Connection.RemoteIpAddress is not null && !ActuatorEndpoint.IpIsAllowed(context.Connection.RemoteIpAddress))
                 {
                     context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = "Forbidden" }));
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(new { message = "Forbidden" }));
                     return;
                 }
 
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(quartzEndpoint.GetSchedulerStatus()));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(quartzEndpoint.GetSchedulerStatus()));
 
             }
             else

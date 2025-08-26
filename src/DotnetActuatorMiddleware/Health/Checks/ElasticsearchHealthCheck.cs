@@ -1,8 +1,6 @@
 using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 
-using Newtonsoft.Json;
-
 namespace DotnetActuatorMiddleware.Health.Checks;
 
 public static class ElasticsearchHealthCheck
@@ -14,7 +12,7 @@ public static class ElasticsearchHealthCheck
     /// <param name="timeoutSecs">Elasticsearch request timeout in seconds</param>
     /// <param name="username">Elasticsearch username to authenticate with</param>
     /// <param name="password">Elasticsearch password to authenticate with</param>
-    /// <param name="serverCertificateValidation">Whether or not to validate the SSL certificate returned by the server</param>
+    /// <param name="serverCertificateValidation">Whether to validate the SSL certificate returned by the server</param>
     /// <returns>A <see cref="HealthResponse"/> object that contains the return status of this health check</returns>
     public static HealthResponse CheckHealth(Uri[] servers, int timeoutSecs = 5, string? username = null, string? password = null, bool serverCertificateValidation = true)
     {

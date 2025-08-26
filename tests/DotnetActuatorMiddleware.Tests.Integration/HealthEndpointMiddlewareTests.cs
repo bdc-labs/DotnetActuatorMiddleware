@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using DotnetActuatorMiddleware.Health;
@@ -176,6 +177,7 @@ public class HealthEndpointMiddlewareTests
         Assert.That(response.Content.Headers.ContentType!.MediaType, Is.EqualTo(ContentType));
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.ServiceUnavailable));
         
+        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
         Assert.That(responseJson, Is.Not.Null);
         Assert.That(responseJson.ContainsKey("healthy"), Is.True);
         Assert.That(bool.Parse(responseJson["healthy"]!.ToString()), Is.False);
