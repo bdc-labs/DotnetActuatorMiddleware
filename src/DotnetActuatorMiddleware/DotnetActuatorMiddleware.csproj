@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>Provides actuator style health and information endpoints for .NET web applications.</Description>
     <LangVersion>14</LangVersion>
@@ -21,14 +21,14 @@
     <None Include="../../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Elastic.Clients.Elasticsearch" Version="9.2.2" />
-    <PackageReference Include="IPAddressRange" Version="6.3.0" />
+    <PackageReference Include="Elastic.Clients.Elasticsearch" Version="9.2.2"/>
+    <PackageReference Include="IPAddressRange" Version="6.3.0"/>
     <PackageReference Include="MySql.Data" Version="9.5.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Quartz" Version="3.15.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Text.Json" Version="10.0.1" />
+    <PackageReference Include="System.Text.Json" Version="10.0.1"/>
   </ItemGroup>
 </Project>

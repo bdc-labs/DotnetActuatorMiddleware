@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v3.0.0...v3.1.0) (2026-01-12)
+
+
+### Features
+
+* Bump dependencies and move to .NET 10 ([4e440fa](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/4e440fa8443968d90e856eb3abaa8e9391535d9a))
+* Bump test dependencies ([7f93bb6](https://github.com/bdc-labs/DotnetActuatorMiddleware/commit/7f93bb6156befedcef67afdf7cfc15857030d603))
+
 # [3.0.0](https://github.com/bdc-labs/DotnetActuatorMiddleware/compare/v2.1.0...v3.0.0) (2025-08-26)
 
 

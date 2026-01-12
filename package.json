@@ -1,6 +1,6 @@
 {
   "name": "dotnetactuatormiddleware",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Provides actuator style endpoints for .NET web services similar to those offered by SpringBoot",
   "repository": {
     "type": "git",
